@@ -9,3 +9,6 @@ header {
   background-image: url("https://www.transparenttextures.com/patterns/3px-tile.png");
 }
 
+header h2 {
+  color: #fff;
+}

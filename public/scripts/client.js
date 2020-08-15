@@ -16,12 +16,10 @@ const tweetData = {
   "created_at": 1461116232227
 };
 
-const data = [
-  {
+const data = [{
     "user": {
       "name": "Newton",
-      "avatars": "https://i.imgur.com/73hZDYK.png"
-      ,
+      "avatars": "https://i.imgur.com/73hZDYK.png",
       "handle": "@SirIsaac"
     },
     "content": {
@@ -33,7 +31,8 @@ const data = [
     "user": {
       "name": "Descartes",
       "avatars": "https://i.imgur.com/nlhLi3I.png",
-      "handle": "@rd" },
+      "handle": "@rd"
+    },
     "content": {
       "text": "Je pense , donc je suis"
     },
@@ -41,6 +40,8 @@ const data = [
   }
 ];
 
+
+// Tweet template
 const createTweetElement = (tweetObject) => {
   const template = `
     <article class='tweet'>
@@ -67,6 +68,8 @@ const createTweetElement = (tweetObject) => {
   return template;
 };
 
+
+// Show tweets in reverse chronological order
 const renderTweets = (tweets) => {
   for (const tweet in tweets) {
     const $tweetElement = createTweetElement(tweets[tweet]);
@@ -74,12 +77,16 @@ const renderTweets = (tweets) => {
   }
 };
 
-const escape =  function(str) {
+
+// For XXS mitigation
+const escape = function (str) {
   let div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
 };
 
+
+// When the DOM has fully loaded
 $(document).ready(() => {
   const $tweetForm = $('#tweet-form');
 
@@ -91,30 +98,43 @@ $(document).ready(() => {
       success: (tweetsResponse) => {
         renderTweets(tweetsResponse);
       },
-      error: (error) => {console.log(error)}
+      error: (error) => {
+        console.log(error)
+      }
     });
   };
 
+  // Appends an error message above tweet form
+  const errorMsg = (message) => {
+    $('.new-tweet').prepend(`<div id="error-alert"><i class="fa fa-exclamation-triangle"></i><p>${message}</p><i class="fa fa-exclamation-triangle"></i></div>`);
+  };
+
+  // When sumbit button is pressed
   $tweetForm.on('submit', (event) => {
     event.preventDefault();
     const tweetLength = $('#tweet-text').val().length;
 
+    // Check if tweet is valid
     if (!tweetLength) {
-      $('.new-tweet').prepend('<div id="error-alert"><i class="fa fa-exclamation-triangle"></i><p>Your tweet was not valid</p><i class="fa fa-exclamation-triangle"></i></div>');
+      errorMsg('Your tweet muct contain atleast 1 character');
       return;
     } else if (tweetLength > 140) {
-      $('.new-tweet').prepend('<div id="error-alert"><i class="fa fa-exclamation-triangle"></i><p>Your tweet must be 140 characters or less</p><i class="fa fa-exclamation-triangle"></i></div>');
+      errorMsg('Your tweet must be 140 characters or less');
       return;
     }
 
     $.ajax({
       url: 'http://localhost:8080/tweets',
       method: 'POST',
-      data: { text: escape($('#tweet-text').val()) },
+      data: {
+        text: escape($('#tweet-text').val())
+      },
     }).then(() => {
       loadTweets();
     });
     $('#tweet-text').val("");
     $('#error-alert').remove();
   });
+
+  loadTweets();
 });
