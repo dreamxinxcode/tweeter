@@ -11,6 +11,11 @@ This repository is the starter code for the project: Students will fork and clon
 3. Start the web server using the `npm run local` command. The app will be served at <http://localhost:8080/>.
 4. Go to <http://localhost:8080/> in your browser.
 
+## Screenshots
+
+!['Creating a tweet'](https://github.com/dreamxinxcode/tweeter/blob/master/docs/2020-08-14_16-58-01.png?raw=true)
+!['Tweet after posting'](https://github.com/dreamxinxcode/tweeter/blob/master/docs/2020-08-14_16-58-07.png?raw=true)
+
 ## Dependencies
 
 - Express
